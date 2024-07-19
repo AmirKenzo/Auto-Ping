@@ -11,19 +11,21 @@ install_service() {
     cat << EOF > $SCRIPT_FILE
 #!/bin/bash
 
+server_ip="$server_ip"
+
 # Function to ping IP and log the result
 ping_server() {
     while true; do
-        ping -c 5 $1 > /dev/null
-        if [ $? -ne 0 ]; then
-            echo "Server $1 is down at \$(date)" >> /var/log/server_ping.log
+        ping -c 5 \$server_ip > /dev/null
+        if [ \$? -ne 0 ]; then
+            echo "Server \$server_ip is down at \$(date)" >> /var/log/server_ping.log
         fi
         sleep 60
     done
 }
 
 # Start pinging the server
-ping_server $server_ip
+ping_server
 EOF
 
     # Make the ping script executable
