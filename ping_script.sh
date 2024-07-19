@@ -3,27 +3,9 @@
 SERVICE_FILE="/etc/systemd/system/ping_script.service"
 SCRIPT_FILE="/usr/local/bin/ping_script.sh"
 
-# Function to validate IP address.
-validate_ip() {
-    local ip=$1
-    local valid_ipv4=$(echo $ip | grep -Eo '^([0-9]{1,3}\.){3}[0-9]{1,3}$')
-    local valid_ipv6=$(echo $ip | grep -Eo '^(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}$|^((?:[a-fA-F0-9]{1,4}:){6}|::(?:[a-fA-F0-9]{1,4}:){5}|(?:[a-fA-F0-9]{1,4})?::(?:[a-fA-F0-9]{1,4}:){4}|((?:[a-fA-F0-9]{1,4}:)?[a-fA-F0-9]{1,4})?::(?:[a-fA-F0-9]{1,4}:){3}|((?:[a-fA-F0-9]{1,4}:){0,2}[a-fA-F0-9]{1,4})?::(?:[a-fA-F0-9]{1,4}:){2}|((?:[a-fA-F0-9]{1,4}:){0,3}[a-fA-F0-9]{1,4})?::[a-fA-F0-9]{1,4}:|((?:[a-fA-F0-9]{1,4}:){0,4}[a-fA-F0-9]{1,4})?::)$|^((?:[a-fA-F0-9]{1,4}:){1,5}|::(?:[a-fA-F0-9]{1,4}:){0,4})(?:[a-fA-F0-9]{1,4})?(?:\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})?$')
-    if [[ -n $valid_ipv4 || -n $valid_ipv6 ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
 install_service() {
     # Ask the user for the IP address
     read -p "Please enter the server IP (IPv4 or IPv6): " server_ip
-
-    # Validate the entered IP address
-    if ! validate_ip $server_ip; then
-        echo "Invalid IP address. Please try again."
-        exit 1
-    fi
 
     # Create and copy ping_script.sh
     cat << EOF > $SCRIPT_FILE
