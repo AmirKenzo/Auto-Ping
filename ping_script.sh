@@ -3,7 +3,7 @@
 SERVICE_FILE="/etc/systemd/system/ping_script.service"
 SCRIPT_FILE="/usr/local/bin/ping_script.sh"
 
-# Function to validate IP address
+# Function to validate IP address.
 validate_ip() {
     local ip=$1
     local valid_ipv4=$(echo $ip | grep -Eo '^([0-9]{1,3}\.){3}[0-9]{1,3}$')
